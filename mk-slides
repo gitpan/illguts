@@ -1,11 +1,10 @@
-#!/local/perl/bin/perl -w
-
+#!/usr/bin/perl -w
 # $Id: mk-slides,v 1.1 1998/08/11 10:20:51 aas Exp $
 
 $file = shift || die;
 
-$event = shift || "Perl Conference 2.0";
-$copy = shift  || "© 1998 Gisle Aas";
+$event = shift || "illguts-0.10"; # "Perl Conference 2.0"
+$copy  = shift  || "© 1998 Gisle Aas, 2009 Reini Urban";
 
 $base = $file;
 $base =~ s/\.pds$// or die "File must end with .pds\n";
@@ -68,12 +67,11 @@ for $no (1 .. $tot) {
     $title =~ s/<\/?[^>]+>//g;
     printf "%3d) %s\n", $no, $title;
     print F qq(<title>$title</title><body bgcolor="#CCCCCC" xbackground="../img/cbg.gif">);
-
+    print F '<form action="#" id="controlForm">';
     if ($no < $tot) {
 	my $next = $no + 1;
 	$slides[$no-1] =~ s!(<center><table cellpadding=30 border=2 width=95%><tr><td bgcolor="#FFFFFF"><h1>)(.*)(</h1>\n)!$1<a href="s$next.html">$2</a>$3!;
     }
-
     print F $slides[$no-1];
 
     # Manøver-knapper
@@ -81,19 +79,19 @@ for $no (1 .. $tot) {
     print F "<tr><td width=100%><font size=-2>$event<br>$copy</font></td>\n";
     print F "<td>$no/$tot</td>";
     print F "<td>";
-    print F "<table border=1><tr><td>";
+    print F '<form action="#" id="controlForm"><table border=1><tr><td>';
     if ($no > 1) {
 	my $prev = $no - 1;
-	print F qq(<a href="s$prev.html"><img src="../img/left.gif" alt="««" border=0></a>);
+	print F qq(<a accesskey="z" id="prev" href="s$prev.html"><img src="../img/left.gif" alt="««" border=0></a>);
     }
-    print F qq(<a href="index.html"><img src="../img/up.gif" alt="/\\" border=0></a>);
+    print F qq(<a accesskey="t" id="toggle" href="index.html"><img src="../img/up.gif" alt="/\\" border=0></a>);
     if ($no < $tot) {
 	my $next = $no + 1;
-	print F qq(<a href="s$next.html"><img src="../img/right.gif" alt="»»" border=0></a>);
+	print F qq(<a accesskey="x" href="s$next.html"><img src="../img/right.gif" alt="»»" border=0></a>);
     }
-    print F "</td></tr></table>";
+    print F "</div></td></tr></table>";
     print F "</td>";
-    print F "</tr></table>\n<p>\n";
+    print F "</tr></table></form>\n<p>\n";
 
     print F "<p><br><p><br><p><small>$comment[$no-1]</small>\n" if $comment[$no-1];
     print F qq(</body>\n);
@@ -105,6 +103,11 @@ open(INDEX, ">$base/index.html") or die "Can't create $base/index.html: $!";
 print INDEX <<EOT;
 <title>$base - $event</title>
 <body bgcolor="#CCCCCC">
+<!-- configuration parameters --> 
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- S5 JS -->
+<script src="http://meyerweb.com/ui/default/slides.js" type="text/javascript"></script>
 
 <a href="../index.html"><img src="../img/up.gif" alt="[UP]" align=right></a>
 

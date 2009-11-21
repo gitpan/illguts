@@ -1,6 +1,6 @@
 =slide Data types
 
-<p><img src="../../svtypes.gif">
+<p><img src="../svtypes.png">
 
 <hr><xmp>
 int  SvTYPE(SV* sv);
@@ -9,9 +9,9 @@ void SvUPGRADE(SV* sv, int type);
 
 =slide SvNULL
 
-<p><img src="../../svnull.gif">
+<p><img src="../svhead.png">
 
-<p><img src="../../flags.gif">
+<p><img src="../flags.png">
 
 <hr><xmp>
 SV* NEWSV(int tag, STRLEN len);
@@ -23,6 +23,7 @@ int SvIOK(SV*);
 int SvNOK(SV*);
 int SvPOK(SV*);
 int SvROK(SV*);
+int SvNIOK(SV*);            (SVp_?OK >> PRIVSHIFT) == SVf_?OK
 
 int SvMAGICAL(SV*);
 int SvGMAGICAL(SV*);
@@ -30,9 +31,38 @@ int SvSMAGICAL(SV*);
 int SvRMAGICAL(SV*);
 </xmp>
 
+=slide SvRV
+
+<p><img src="../svrv.png">
+
+<hr><xmp>
+SV* newRV_inc((SV*) thing);
+SV* newRV_noinc((SV*) thing);
+
+U32 SvROK(SV*)      Has a valid reference pointer?
+SV* SvRV(SV*)
+void SvROK_on(SV*)  Tells an SV that it is an RV.
+void SvROK_off(SV*) Unsets the RV status of an SV.
+
+int SvREFCNT(SV* sv);
+SV* SvREFCNT_inc(SV* sv);
+void SvREFCNT_dec(SV* sv);
+</xmp>
+
+=slide SvIV and SvNV
+
+<p><img src="../sviv.png">
+
+<p><img src="../svnv.png">
+
+<hr><xmp>
+SV*  newSViv(IV);
+SV*  newSVnv(double);
+</xmp>
+
 =slide SvPV
 
-<p><img src="../../svpv.gif">
+<p><img src="../svpv.png">
 
 <hr><xmp>
 SV*   newSVpv(char*, int);
@@ -58,9 +88,9 @@ void  sv_catsv(SV*, SV*);
 
 =slide SvPVIV and SvPVNV
 
-<p><img src="../../svpviv.gif">
+<p><img src="../svpviv.png">
 
-<p><img src="../../svpvnv.gif">
+<p><img src="../svpvnv.png">
 
 <hr><xmp>
 void  sv_setiv(SV*, IV);
@@ -73,6 +103,8 @@ void  sv_setpvfn(SV*, const char*, STRLEN,
                  va_list *, SV **, I32, bool);
 void  sv_setsv(SV*, SV*);
 
+SvPOK_on(SV*)
+SvIOK_on(SV*)
 SvIV(SV*)
 SvNV(SV*)
 SvTRUE(SV*)
@@ -80,7 +112,7 @@ SvTRUE(SV*)
 
 =slide OOK
 
-<p><img src="../../ook.gif">
+<p><img src="../ook.png">
 
 <hr><xmp>
 void sv_insert(SV* bigstr, STRLEN offset, STRLEN len,
@@ -89,37 +121,9 @@ void sv_chop(SV*, char* ptr);
 void SvOOK_off(SV*);
 </xmp>
 
-=slide SvIV and SvNV
-
-<p><img src="../../sviv.gif">
-
-<p><img src="../../svnv.gif">
-
-<hr><xmp>
-SV*  newSViv(IV);
-SV*  newSVnv(double);
-</xmp>
-
-=slide SvRV
-
-<p><img src="../../svrv.gif">
-
-<p><img src="../../svpvrv.gif">
-
-<hr><xmp>
-SV* newRV_inc((SV*) thing);
-SV* newRV_noinc((SV*) thing);
-
-SV* SvRV(SV*)
-
-int SvREFCNT(SV* sv);
-SV* SvREFCNT_inc(SV* sv);
-void SvREFCNT_dec(SV* sv);
-</xmp>
-
 =slide SvPVMG
 
-<p><img src="../../svpvmg.gif">
+<p><img src="../svpvmg.png">
 
 <hr><xmp>
 void   sv_magic(SV* sv, SV* obj, int how,
@@ -130,9 +134,9 @@ MAGIC* mg_find(SV* sv, int type);
 SV*    sv_bless(SV* sv, HV* stash);
 </xmp>
 
-=slide SvPVBM
+=slide p5rx (SvPVBM)
 
-<p><img src="../../svpvbm.gif">
+<p><img src="../svpvbm.png">
 
 <hr><xmp>
 void  fbm_compile(SV* sv, U32 flags);
@@ -142,11 +146,11 @@ char* fbm_instr(char* str, char* strend,
 
 =slide SvPVLV
 
-<p><img src="../../svpvlv.gif">
+<p><img src="../svpvlv.png">
 
 =slide AV
 
-<p><img src="../../av.gif">
+<p><img src="../av.png">
 
 <hr><xmp>
 AV*  newAV();
@@ -166,10 +170,10 @@ void  av_extend(AV*, I32 key);
 
 =slide HV
 
-<p><img src="../../hv.gif">
+<p><img src="../hv.png">
 
 <hr>
-<p><img src="../../strtab.gif">
+<p><img src="../strtab.png">
 
 <hr><xmp>
 HV*  newHV();
@@ -191,11 +195,11 @@ SV*   hv_iterval(HV*, HE* entry);
 
 =slide GV
 
-<p><img src="../../gv.gif">
+<p><img src="../gv.png">
 
 =slide Stashes
 
-<p><img src="../../stash.gif">
+<p><img src="../stash.png">
 
 <hr><xmp>
 SV* perl_get_sv(char* name, int create);
@@ -209,26 +213,31 @@ GV* gv_fetchpv(char* name, int create, int type);
 
 =slide CV
 
-<p><img src="../../cv.gif">
+<p><img src="../cv.png">
 
 =slide OpTypes
 
-<p><img src="../../optypes.gif">
+A Perl program/subroutine is represented internally by a syntax tree built from OP nodes. 
+Perl 5.005 had 346 different OP-codes, Perl 5.11.2 has 365 OP-Codes, see opnames.h.
+In Perl there are 12 different OP classes, that are related like the following 
+class hierarchy diagram shows: 
 
-=slide OpTypes
+<p><img src="../optypes.png">
 
-<p><img src="../../op1.gif">
-<p><img src="../../op2.gif">
+=slide OP's
+
+<p><img src="../op1.png">
+<p><img src="../op2.png">
 
 =slide SvPVFM
 
-<p><img src="../../svpvfm.gif">
+<p><img src="../svpvfm.png">
 
 =slide IO
 
-<p><img src="../../io.gif">
+<p><img src="../io.png">
 
-=slide Stacks
+=slide Stacks + Scope
 
-<p><img src="../../scope.gif">
-<p><img src="../../stack.gif">
+<p><img src="../scope.png">
+<p><img src="../stack.png">
