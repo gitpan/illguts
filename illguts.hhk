@@ -187,6 +187,20 @@
 		<param name="Keyword" value="GV">
 		<param name="Local" value="index.html#gv">
 		</OBJECT>
+        <UL>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="GvFLAGS">
+		<param name="Local" value="index.html#gv">
+		</OBJECT>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="GP">
+		<param name="Local" value="index.html#gp">
+		</OBJECT>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="Stashes">
+		<param name="Local" value="index.html#stash">
+		</OBJECT>
+        </UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="GP">
 		<param name="Local" value="index.html#gp">
@@ -221,6 +235,20 @@
 		<param name="Keyword" value="PAD">
 		<param name="Local" value="index.html#pad">
 		</OBJECT>
+        <UL>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PADLIST">
+		<param name="Local" value="index.html#pad">
+		</OBJECT>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PL_curpad">
+		<param name="Local" value="index.html#pad">
+		</OBJECT>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PL_comppad">
+		<param name="Local" value="index.html#pad">
+		</OBJECT>
+        </UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="IV">
 		<param name="Local" value="index.html#sviv">
@@ -228,10 +256,6 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="NV">
 		<param name="Local" value="index.html#svnv">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Keyword" value="PVFM">
-		<param name="Local" value="index.html#svpvfm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="PV">
@@ -258,6 +282,18 @@
 		<param name="Keyword" value="PVMG">
 		<param name="Local" value="index.html#svpvmg">
 		</OBJECT>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PVFM">
+		<param name="Local" value="index.html#svpvfm">
+		</OBJECT>
+          <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PVAV">
+		<param name="Local" value="index.html#av">
+		</OBJECT>
+          <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="PVHV">
+		<param name="Local" value="index.html#hv">
+		</OBJECT>
         </UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="RV">
@@ -272,6 +308,10 @@
 		<param name="Local" value="index.html#stacks">
 		</OBJECT>
         <UL>
+	  <LI> <OBJECT type="text/sitemap">
+		<param name="Keyword" value="savestack">
+		<param name="Local" value="index.html#stacks">
+		</OBJECT>
 	  <LI> <OBJECT type="text/sitemap">
 		<param name="Keyword" value="Scope">
 		<param name="Local" value="index.html#scope">

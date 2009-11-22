@@ -215,6 +215,14 @@ GV* gv_fetchpv(char* name, int create, int type);
 
 <p><img src="../cv.png">
 
+=slide PAD
+
+<p><img src="../pad.png">
+
+<xmp>
+PAD_SV(po) = PL_curpad[po]    /* po: PADOFFSET i.e. targ */
+</xmp>
+
 =slide OpTypes
 
 A Perl program/subroutine is represented internally by a syntax tree built from OP nodes. 

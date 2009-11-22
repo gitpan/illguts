@@ -1,15 +1,28 @@
+0.12 2009-11-22 rurban@cpan.org
+        * mk-slides: fix version
+        * make_dist: force perms
+        * slides/index.html: Removed unused S5 js from 
+        * svpvmg.epsx: len,obj,ptr reshuffle, added magic_state
+        * gv.epsx: renamed FLAGS to GvFLAGS
+        * io.epsx: renamed FLAGS to IoFLAGS
+        * index.html: Fixed GV
+        * Added PAD to slides
+	* Added opsample.epsx, added OP Concise explanation,
+	  removed abc-simple.png
+
 0.11 2009-11-22 rurban@cpan.org
         * Added Changes (written with info from backpan)
         * Changed IV + NV text, fixed svnv.epsx
         * Added GvNAME to PVLV
         * Rewrote AV, HV, GV
+        * illguts.pdf: added
 
 0.10 2009-11-21 rurban@cpan.org
         * Rewrite of all files for the Perl 5.10 changes. 
           Uptodate with current 5.11.2 (BIND and RV added).
         * Added illguts.chm Windows HTML Help File
         * Added abc-simple.png from Simon Cozens Tutorial
-        * Restructuring of slides
+        * Restructuring of slides: Added accesskeys META-z, META-x, META-t
 
 0.09 1999-11-05 gaas@cpan.org
         * replaced .gif by .png
