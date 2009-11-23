@@ -1,3 +1,9 @@
+0.13 2009-11-23 rurban@cpan.org
+	* some typos
+        * opsample.epsx: smaller bubble
+	* Fixed opcode flags (parsed Concise vs static)
+        * CV: added pad.ps with PADLIST ptr
+
 0.12 2009-11-22 rurban@cpan.org
         * mk-slides: fix version
         * make_dist: force perms
