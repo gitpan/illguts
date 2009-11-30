@@ -25,9 +25,23 @@ stroke
 } forall
 
 % PAD 0 250-7.5
-105 242.5 130 247.5 ptrn
+105 242.5 130 252 ptrn
 % PAD 1
-105 227.5 130 212.5 ptrn
+105 227.5 130 222 ptrn
+
+gsave
+  130 255 translate 0.6 dup scale 
+  0 0 sv2
+  0 -50 sv2
+grestore
+
+% AV0 => AvARRAY
+154 234 190 247.5 ptrn
+% AV1 => AvARRAY
+154 204 190 212.5 ptrn
+
+gsave 
+60 0 translate
 
 % PAD1 box
 0.5 setlinewidth
@@ -58,3 +72,5 @@ gsave
    dup 212.5 3 2 roll y ptrn
 } forall
 end
+
+grestore

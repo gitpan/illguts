@@ -1,3 +1,10 @@
+0.14 2009-11-30 rurban@cpan.org
+	* op1.epsx: shortened pmop
+	* pad.espx: added intermediate AVs, PL_curpad, PL_comppad
+          and PL_comppad_name
+	* svng,svpvbm,svpvmg: better bounding box
+	* svpvrv.epsx, svpvrv.png: removed
+
 0.13 2009-11-23 rurban@cpan.org
 	* some typos
         * opsample.epsx: smaller bubble
