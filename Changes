@@ -1,3 +1,8 @@
+0.15 2009-12-01 rurban@cpan.org
+	* op.ps: type:9, opt:7
+	* op1, op2: fixed cop,padop. removed condop
+	* optypes: exchanged condop with padop
+
 0.14 2009-11-30 rurban@cpan.org
 	* op1.epsx: shortened pmop
 	* pad.espx: added intermediate AVs, PL_curpad, PL_comppad
