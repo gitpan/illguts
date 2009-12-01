@@ -1,3 +1,7 @@
+0.16 2009-12-01 rurban@cpan.org
+	* opsamp2: added
+	* eps2png: cleanup
+
 0.15 2009-12-01 rurban@cpan.org
 	* op.ps: type:9, opt:7
 	* op1, op2: fixed cop,padop. removed condop
