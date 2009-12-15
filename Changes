@@ -1,3 +1,8 @@
+0.17 2009-12-15 rurban@cpan.org
+	* index.html: more links.
+	  RV is not the exact same as a IV.
+ 	  PVBM changed to PVGV with VALID.
+
 0.16 2009-12-01 rurban@cpan.org
 	* opsamp2: added
 	* eps2png: cleanup
