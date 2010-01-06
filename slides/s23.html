@@ -1,0 +1,18 @@
+<title>eval</title><body bgcolor="#CCCCCC" xbackground="../img/cbg.gif"><form action="#" id="controlForm">
+<center><table cellpadding="30" border="2" width="95%"><tr><td bgcolor="#FFFFFF"><h1>eval</h1>
+
+<p><img src="../eval.png">
+
+<p>Pack the op sequence into a simple try/catch switch between <code>JMPENV_PUSH</code> and
+<code>JMPENV_POP</code> calls.
+
+<p>The <b>struct jmpenv</b> packages the state required to perform a proper non-local jump, 
+<b>top_env</b> being the initial JMPENV record. In case of abnormal exceptions 
+(i.e. die) a <code>JMPENV_JUMP</code> must be done, a non-local jump out to 
+the previous JMPENV level with a proper <em>setjmp</em> record.
+</table></center>
+
+<p><table border="0" width="100%"><tr><td width="100%"><font size="-2">illguts-0.19<br>й 1998 Gisle Aas, 2009 Reini Urban</font></td>
+<td>23/23</td><td><form action="#" id="controlForm"><table border="1"><tr><td><a accesskey="z" id="prev" href="s22.html"><img src="../img/left.gif" alt="лл" border=0></a><a accesskey="t" id="toggle" href="index.html"><img src="../img/up.gif" alt="/\" border=0></a></div></td></tr></table></td></tr></table></form>
+<p>
+</body>
