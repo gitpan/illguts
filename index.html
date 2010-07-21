@@ -1,22 +1,42 @@
+<html>
+<head>
 <title>PerlGuts Illustrated</title>
-
-<body bgcolor="#FFFFFF"
-text="#000000" link="#000055" vlink="#550000" alink="#000000"
-topmargin=0>
+<style> 
+span.i58, span.i510 {display: none;} 
+img.i514, div.i514 {text-align: center;} 
+img.i58, img.i510, img.i514 {border: none;}
+</style>
+<script type="text/javascript"> 
+function Toggle(id) {
+//<![CDATA[
+  var ele=document.getElementById(id);
+  if (ele.style.display=='inline') {
+    ele.style.display='none';
+  } else {
+    ele.style.display='inline';
+  }
+}
+//]]>
+</script>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#000055" vlink="#550000" alink="#000000" topmargin="0">
 
 <h1 align="center" name="top">PerlGuts Illustrated<br><br>
-<small>Version 0.21, for perl 5.12</small></h1>
+<small>Version 0.30, for perl 5.14 and older</small></h1>
 
 <p>This document is meant to supplement the <i><a href="http://perldoc.perl.org/perlguts.html">perlguts(1)</a></i> manual
 page that comes with Perl.  It contains commented illustrations of all
-major internal Perl data structures.  Having this
-document handy hopefully makes reading the Perl source code easier.
-It might also help you interpret the <i><a href="http://perldoc.perl.org/Devel/Peek.html">Devel::Peek</a></i>
-dumps.
+major internal Perl data structures.  
+Having this document handy hopefully makes reading the Perl source code easier.
+It might also help you interpret the <i><a href="http://perldoc.perl.org/Devel/Peek.html">Devel::Peek</a></i> dumps.
 
-<p><i>Most of the internal perl structures had been refactored with
-perl-5.10.0, for earlier perls and comparison use 
-<a href="http://cpansearch.perl.org/src/GAAS/illguts-0.09/index.html">illguts-0.09</a>.</i></p>
+<p>Most of the internal perl structures had been refactored twice, with 5.10, and 5.14. The comparison links and illustrations for 5.8, 5.10 and 5.14 are now included in this single document, but also available as extra files:
+
+<ul>
+<li><a href="index-8.html">illguts for 5.8 and older</a>
+<li><a href="index-10.html">illguts for 5.10 to 5.12</a>
+<li><a href="index-14.html">illguts for 5.14</a>
+</ul>
 
 <p>The first things to look at are the data structures that represent
 Perl data; scalars of various kinds, arrays and hashes.  Internally
@@ -33,7 +53,7 @@ help emulate something like C++ inheritance of types.  The various
 data types that Perl implement are illustrated in this class hierarchy
 diagram.  The arrows indicate inheritance (IS-A relationships).
 
-<p><a name="svtypes"><center><img src="svtypes.png"></a></center>
+<div align="center"><span class="i58" id="svtypes-8"><a name="svtypes-8" onclick="javascript:Toggle('svtypes-8')" title="Click to hide">Until 5.8:<img class="i58" src="svtypes-8.png" alt="svtypes 5.8"></a></span><br><span id="svtypes"><a name="svtypes" href="#svtypes-8" onclick="javascript:Toggle('svtypes-8')" title="Click to show other">Since 5.10:<img class="i514" src="svtypes.png" alt="svtypes"></a></span></div>
 
 <p>As you can see, Perl uses multiple inheritance with <i>SvNULL</i>
 (also named just <i>SV</i>) acting as some kind of virtual base class.
@@ -110,10 +130,13 @@ xpv<i>&lt;xx&gt;</i></a> attached to it. It consist of four words, the _SV_HEAD 
 values and the SV_U union with one pointer.</p>
 
 <b>_SV_HEAD and SV_U union</b>
-<p><center><img src="svhead.png" alt="_SV_HEAD"></center><p>
 
-<p>The first word contains the <b>ANY</b> pointer to the optional body 
-and the last word the <b>SV_U</b> union.
+<div align="center"><span class="i58" id="svhead-8"><a name="svhead-8" onclick="javascript:Toggle('svhead-8')" title="Click to hide">Until 5.8:<img class="i58" src="svhead-8.png" alt="svhead 5.8"></a></span><br><span id="svhead"><a name="svhead" href="#svhead-8" onclick="javascript:Toggle('svhead-8')" title="Click to show other">Since 5.10:<img class="i514" src="svhead.png" alt="svhead"></a></span></div>
+
+<!-- <div align="center"><span class="i58" id="svnull-8"><a name="svnull-8" onclick="javascript:Toggle('svnull-8')"><span title="Click to hide">Until 5.8:</span><img class="i58" src="svnull-8.png" alt="svnull 5.8"></a></span>
+<span class="i514" id="svhead"><a href="#svnull-8" onclick="javascript:Toggle('svnull-8')"><span title="Click to show other">Since 5.10:<img src="svhead.png" alt="_SV_HEAD 5.10"></span></a></span></div> -->
+
+<p>The first word contains the <b>ANY</b> pointer to the optional body.
 All types are implemented by attaching additional data to the ANY pointer, 
 just the <a href="#svrv">RV</a> not.
 
@@ -127,7 +150,7 @@ value.  When the reference count reaches zero the object is freed.
 <p>The third word contains a <b>FLAGS</b> field and a <b>TYPE</b> field as 32 bit
 unsigned integer.
 
-<p>The forth and last word contains the <b>sv_u union</b>, which
+<p>Since 5.10 the forth and last word contains the <b>sv_u union</b>, which
 contains a pointer to another SV (a RV), the <a href="#svpv">PV</a>
 string, the <a href="#av">AV</a> svu_array, a <a href="#he">HE</a>
 hash or a <a href="#gp">GP</a> struct.
@@ -142,9 +165,9 @@ and other state information.  Some flags are just used as
 optimizations in order to avoid having to dereference several levels
 of pointers just to find that the information is not there.
 
-<p><center><img src="flags.png" alt="flags"></center></p>
+<div align="center"><span class="i58" id="flags-8"><a name="flags-8" onclick="javascript:Toggle('flags-8')" title="Click to hide">Until 5.8:<img class="i58" src="flags-8.png" alt="flags 5.8"></a></span><br><span id="flags"><a name="flags" href="#flags-8" onclick="javascript:Toggle('flags-8')" title="Click to show other">Since 5.10:<img class="i514" src="flags.png" alt="flags"></a></span></div>
 
-<p>The purpose of the SvFLAGS bits are:
+<p>The purpose of the <strong>SvFLAGS</strong> bits are:
 
 <blockquote>
 <dl>
@@ -355,7 +378,7 @@ will have <code>SV*</code> as parameter.  Routines that only work with
 arrays or hashes have <code>AV*</code> or <code>HV*</code>
 respectively in their parameter list.  Likewise for the rest.
 
-<a name="svpv"><h2>SvPV</h2></a>
+<h2><a name="svpv">SvPV</a></h2>
 
 <p>A scalar that can hold a string value is called an
 <i>SvPV</i>.  In addition to the <i>SV</i> struct of SvNULL,
@@ -373,7 +396,7 @@ make sure that the string is NUL-terminated if passed to C
 library routines.  This requires that LEN is always at least
 1 larger than CUR.
 
-<p><center><img src="svpv.png"></center>
+<div align="center"><span class="i58" id="svpv-8"><a name="svpv-8" onclick="javascript:Toggle('svpv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpv-8.png" alt="svpv 5.8"><br>Since 5.10:<img class="i510" src="svpv-10.png" alt="svpv 5.10"></a></span><br><span class="i514" id="svpv-14"><a name="svpv-14" href="#svpv-8" onclick="javascript:Toggle('svpv-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpv-14.png" alt="svpv 5.14"></a></span></div>
 
 <p>The <b>POK</b> flag indicates that the string pointed to by PVX
 contains an valid string value.  If the POK flag is off and
@@ -392,15 +415,15 @@ indicates if the IVX value is valid.  If both the IOK and POK flag is
 on, then the PVX will (usually) be a string representation of the same
 number found in IVX.
 
-<p><center><img src="svpviv.png"></center>
+<div align="center"><span class="i58" id="svpviv-8"><a name="svpviv-8" onclick="javascript:Toggle('svpviv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpviv-8.png" alt="svpviv 5.8"><br>Since 5.10:<img class="i510" src="svpviv-10.png" alt="svpviv 5.10"></a></span><br><span class="i514" id="svpviv-14"><a name="svpviv-14" href="#svpviv-8" onclick="javascript:Toggle('svpviv-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpviv-14.png" alt="svpviv 5.14"></a></span></div>
 
 <p>The <i>SvPVNV</i> type is like <i>SvPVIV</i> but uses the 
 single <i>double</i> value called NVX in xnv_u.
 The corresponding flag is called NOK.
 
-<p><center><img src="svpvnv.png"></center>
+<div align="center"><span class="i58" id="svpvnv-8"><a name="svpvnv-8" onclick="javascript:Toggle('svpvnv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpvnv-8.png" alt="svpvnv 5.8"><br>Since 5.10:<img class="i510" src="svpvnv-10.png" alt="svpvnv 5.10"></a></span><br><span class="i514" id="svpvnv-14"><a name="svpvnv-14" href="#svpvnv-8" onclick="javascript:Toggle('svpvnv-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpvnv-14.png" alt="svpvnv 5.14"></a></span></div>
 
-<a name="SvOOK"><h2>SvOOK</h2></a>
+<h2><a name="SvOOK">SvOOK</a></h2>
 
 As a special hack, in order to improve the speed of removing characters
 from the beginning of a string, the <a href="#SVf_OOK"><i>OOK flag</i></a> is used. 
@@ -408,7 +431,7 @@ When this flag is on, then the IVX value is not interpreted as an integer value,
 is instead used as an <i>offset</i> into the string.  The PVX, CUR,
 LEN is adjusted to point within the allocated string instead.
 
-<p><center><img src="ook.png"></center>
+<div align="center"><span class="i58" id="ook-8"><a name="ook-8" onclick="javascript:Toggle('ook-8')" title="Click to hide">Until 5.8:<img class="i58" src="ook-8.png" alt="ook 5.8"><br>Since 5.10:<img class="i510" src="ook-10.png" alt="ook 5.10"></a></span><br><span class="i514" id="ook-14"><a name="ook-14" href="#ook-8" onclick="javascript:Toggle('ook-8')" title="Click to show other">Since 5.14:<img class="i514" src="ook-14.png" alt="ook 5.14"></a></span></div>
 
 <h2><a name="sviv">SvIV</a> and <a name="svnv">SvNV</a></h2>
 
@@ -424,19 +447,19 @@ them.  This arrangement makes it possible for code to always access
 the IVX/NVX fields at a fixed offset from where the SV field ANY
 points. -->
 
-<p><center><img src="sviv.png"></center>
+<div align="center"><span class="i58" id="sviv-8"><a name="sviv-8" onclick="javascript:Toggle('sviv-8')" title="Click to hide">Until 5.8:<img class="i58" src="sviv-8.png" alt="sviv 5.8"><br>Since 5.10:<img class="i510" src="sviv-10.png" alt="sviv 5.10"></a></span><br><span class="i514" id="sviv-14"><a name="sviv-14" href="#sviv-8" onclick="javascript:Toggle('sviv-8')" title="Click to show other">Since 5.14:<img class="i514" src="sviv-14.png" alt="sviv 5.14"></a></span></div>
 
-<p><center><img src="svnv.png"></center>
+<div align="center"><span class="i58" id="svnv-8"><a name="svnv-8" onclick="javascript:Toggle('svnv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svnv-8.png" alt="svnv 5.8"><br>Since 5.10:<img class="i510" src="svnv-10.png" alt="svnv 5.10"></a></span><br><span class="i514" id="svnv-14"><a name="svnv-14" href="#svnv-8" onclick="javascript:Toggle('svnv-8')" title="Click to show other">Since 5.14:<img class="i514" src="svnv-14.png" alt="svnv 5.14"></a></span></div>
 
-<a name="svrv"><h2>SvRV</h2></a>
+<h2><a name="svrv">SvRV</a></h2>
 
 <p>The <i>SvRV</i> type uses the fourth word sv_u.svu_rv as pointer to an SV 
 (which can be any of the SvNULL subtypes), AV or HV. 
 A SvRV object with ROK flag off represents an undefined value.
 
-<p><center><img src="svrv.png"></center>
+<div align="center"><span class="i58" id="svrv-8"><a name="svrv-8" onclick="javascript:Toggle('svrv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svrv-8.png" alt="svrv 5.8"></a></span><br><span id="svrv"><a name="svrv" href="#svrv-8" onclick="javascript:Toggle('svrv-8')" title="Click to show other">Since 5.10:<img class="i514" src="svrv.png" alt="svrv"></a></span></div>
 
-<a name="svpvmg"><h2>SvPVMG</h2></a>
+<h2><a name="svpvmg">SvPVMG</a></h2>
 
 <p>Blessed scalars or other magic attached. <i>SvPVMG</i> has two
 additional fields; MAGIC and STASH. MAGIC is a pointer to additional
@@ -456,7 +479,7 @@ The STASH field is set when the value is blessed into a package
 The GV and CV subclasses introduce their own unrelated fields called
 STASH which might be confusing.)</i></small>
 
-<p><center><img src="svpvmg.png"></center>
+<div align="center"><span class="i58" id="svpvmg-8"><a name="svpvmg-8" onclick="javascript:Toggle('svpvmg-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpvmg-8.png" alt="svpvmg 5.8"><br>Since 5.10:<img class="i510" src="svpvmg-10.png" alt="svpvmg 5.10"></a></span><br><span class="i514" id="svpvmg-14"><a name="svpvmg-14" href="#svpvmg-8" onclick="javascript:Toggle('svpvmg-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpvmg-14.png" alt="svpvmg 5.14"></a></span></div>
 
 <p>The field MAGIC points to an instance of <code>struct magic</code>
 (typedef'ed as <code>MAGIC</code>).  This struct has 8 fields:
@@ -506,16 +529,17 @@ and <i>mgs_ss_ix</i> points on the savestack after the saved
 destructor.
 
 
-<a name="svpvbm"><h2>SvPVBM (old)</h2></a>
+<h2><a name="svpvbm">SvPVBM (old)</a></h2>
 
 Since 5.10 <i>SvPVBM</i> are really <i>PVGV</i>s, with the <b>VALID</b> flag set, 
 and "B" magic attached. Before <i>SvPVBM</i> where <i>SV</i> objects by their own.<p>
 
-<p>The <i>SvPVBM</i> is like <a href="#svpvmg"><i>SvPVMG</i></a> above. I uses the xnv_u
-union for three additional values in xbm_s; U32 BmPREVIOUS, U8 BmUSEFUL,
-U8 BmRARE. The SvPVBM value types are used internally to implement very
+<p>The <i>SvPVBM</i> is like <a href="#svpvmg">SvPVMG</a> above. 
+I uses the <code>xnv_u</code> union for three additional values in <code>xbm_s</code>; 
+<code>U32 BmPREVIOUS, U8 BmUSEFUL, U8 BmRARE</code>. 
+The SvPVBM value types are used internally to implement very
 fast lookup of the string in PVX using the "Boyer-Moore" algorithm.
-They are used by the Perl index() builtin when the search string is a
+They are used by the Perl <code>index()</code> builtin when the search string is a
 constant, as well as in the RE engine.  The <tt>fbm_compile()</tt>
 function turns normal SvPVs into this value type.<p>
 
@@ -531,7 +555,7 @@ first occurrence of the rare character. <i>BmUSEFUL</i> is incremented
 help in optimizing RE engine access away.  If it goes below 0, then
 the corresponding substring is forgotten and freed;
 
-<p><center><img src="svpvbm.png"></center>
+<div align="center"><span class="i58" id="svpvbm-8"><a name="svpvbm-8" onclick="javascript:Toggle('svpvbm-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpvbm-8.png" alt="svpvbm 5.8"><br>Since 5.10:<img class="i510" src="svpvbm-10.png" alt="svpvbm 5.10"></a></span><br><span class="i514" id="svpvbm-14"><a name="svpvbm-14" href="#svpvbm-8" onclick="javascript:Toggle('svpvbm-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpvbm-14.png" alt="svpvbm 5.14"></a></span></div>
 
 <p>The extra SvPVBM information and the character distance table is
 only valid when the <b>VALID</b> flag is on.  A magic structure with
@@ -543,9 +567,9 @@ should be <i>tail anchored</i>, i.e. a match should only be considered
 at the end of the string (or before newline at the end of the string).
 
 
-<a name="p5rx"><h2>REGEXP (P5RX)</h2></a>
+<h2><a name="p5rx">REGEXP (P5RX)</a></h2>
 
-The structures behind the P5RX, the struct regexp, store the compiled and
+<p>The structures behind the P5RX, the struct regexp, store the compiled and
 optimized state of a perl regular expression. Internally the new attached struct
 regexp is called <i>ORANGE</i> (since 5.10). New here is support for pluggable
 regex engines - the original engine was <a
@@ -553,12 +577,10 @@ href="http://swtch.com/~rsc/regexp/regexp1.html">critized</a> <i>("Thompson NFA
 for abnormal expressions would be linear, but does not support backtracking")</i>, 
 non-recursive execution, and faster trie-structures for alternations.</p>
 
-The struct regexp contains the compiled bytecode of the expression,
+<p>The struct regexp contains the compiled bytecode of the expression,
 some meta-information about the regex, 
 such as the used engine, the precomp and the number of pairs of backreference parentheses.
-reg_data contains code and pad pointers for EXEC items in the bytecode.
-
-<p>
+reg_data contains code and pad pointers for EXEC items in the bytecode.</p>
 
 <i>basic graph todo</i><p>
 
@@ -575,7 +597,7 @@ compiled Rx bytecode <a href="http://perl.plover.com/Rx/paper/">http://perl.plov
 See <b>perlreguts</b> for some details.
 
 
-<a name="svpvlv"><h2>SvPVLV</h2></a>
+<h2><a name="svpvlv">SvPVLV</a></h2>
 
 The <i>SvPVLV</i> is like <a href="#svpvmg"><i>SvPVMG</i></a> above, but has four additional
 fields; TARGOFF, TARGLEN, TARG, TYPE.  The typical use is for Perl
@@ -630,7 +652,7 @@ string to be affected) is assigned to the TARG field.  The substr
 offset value goes in the TARGOFF field and the substr length parameter
 goes in the TARGLEN field.
 
-<p><center><img src="svpvlv.png"></center>
+<div align="center"><span class="i58" id="svpvlv-8"><a name="svpvlv-8" onclick="javascript:Toggle('svpvlv-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpvlv-8.png" alt="svpvlv 5.8"><br>Since 5.10:<img class="i510" src="svpvlv-10.png" alt="svpvlv 5.10"></a></span><br><span class="i514" id="svpvlv-14"><a name="svpvlv-14" href="#svpvlv-8" onclick="javascript:Toggle('svpvlv-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpvlv-14.png" alt="svpvlv 5.14"></a></span></div>
 
 <p>When assignment to an SvPVLV type occurs, then the value to be
 assigned is first copied into the SvPVLV itself (and affects the PVX,
@@ -638,7 +660,7 @@ IVX or NVX). After this the magic SET method is invoked, which will
 update the TARG accordingly.
 
 
-<a name="av"><h2>AV</h2></a>
+<h2><a name="av">AV</a></h2>
 
 <p>An array is in many ways represented similar to strings. 
 An AV contains all the fields of SvPVMG, but not more.
@@ -654,7 +676,7 @@ less than CUR/LEN would be in a SVPV.
 The NVX field is unused.
 <p>The previous extra FLAGS field in the xpvav has been merged into the sv_flags field.
 
-<p><center><img src="av.png"></center>
+<div align="center"><span class="i58" id="av-8"><a name="av-8" onclick="javascript:Toggle('av-8')" title="Click to hide">Until 5.8:<img class="i58" src="av-8.png" alt="av 5.8"><br>Since 5.10:<img class="i510" src="av-10.png" alt="av 5.10"></a></span><br><span class="i514" id="av-14"><a name="av-14" href="#av-8" onclick="javascript:Toggle('av-8')" title="Click to show other">Since 5.14:<img class="i514" src="av-14.png" alt="av 5.14"></a></span></div>
 
 <p>The array pointed to by ARRAY contains pointers to any of the
 SvNULL subtypes.  Usually ALLOC and ARRAY both point to the start of
@@ -683,7 +705,7 @@ Similarly, the pop just involves decrementing the FILL count.
 
 </dl></blockquote>
 
-<a name="hv"><h2>HV</h2></a>
+<h2><a name="hv">HV</a></h2>
 
 <p>Hashes are the most complex of the Perl data types.  In addition to
 what we have seen above, the very last index in the HE*[] points to a 
@@ -724,7 +746,7 @@ The <b>FILL</b> is the number of elements in ARRAY which are not NULL.  The
 IVX field has been renamed <b>KEYS</b> and is the number of hash elements in
 the HASH.
 
-<p><center><img src="hv.png"></center>
+<div align="center"><span class="i58" id="hv-8"><a name="hv-8" onclick="javascript:Toggle('hv-8')" title="Click to hide">Until 5.8:<img class="i58" src="hv-8.png" alt="hv 5.8"><br>Since 5.10:<img class="i510" src="hv-10.png" alt="hv 5.10"></a></span><br><span class="i514" id="hv-14"><a name="hv-14" href="#hv-8" onclick="javascript:Toggle('hv-8')" title="Click to show other">Since 5.14:<img class="i514" src="hv-14.png" alt="hv 5.14"></a></span></div>
 
 <p>The <a name="he"><b>HE</b></a>s are simple structs containing 3 pointers.  A pointer to the
 next HE, a pointer to the key and a pointer to the value of the given hash
@@ -756,7 +778,7 @@ SvNULL flags:
        have lots of hashes with the same keys.
        The SHAREKEYS flag is on by default for newly created HVs.
        <p>
-       <center><img src="strtab.png"></center>
+       <center><img src="strtab.png" alt="strtab"></center>
 
        <p>
        What is special with the <code>strtab</code> hash is that the <i>val</i>
@@ -778,7 +800,7 @@ SvNULL flags:
 
 </dl></blockquote>
 
-<a name="gv"><h2>GV</h2></a>
+<h2><a name="gv">GV</a></h2>
 
 <The <i>GV</i> ("glob value" aka "symbol") shares the same structure as the <i>SvPVMG</i>.
 
@@ -801,7 +823,7 @@ figure).  The magic GET method is used to stringify the globs (as the fully
 qualified name prefixed with '*').  The magic SET method is used to alias
 an GLOB based on the name of another glob.
 
-<p><center><img src="gv.png"></center>
+<div align="center"><span class="i58" id="gv-8"><a name="gv-8" onclick="javascript:Toggle('gv-8')" title="Click to hide">Until 5.8:<img class="i58" src="gv-8.png" alt="gv 5.8"><br>Since 5.10:<img class="i510" src="gv-10.png" alt="gv 5.10"></a></span><br><span class="i514" id="gv-14"><a name="gv-14" href="#gv-8" onclick="javascript:Toggle('gv-8')" title="Click to show other">Since 5.14:<img class="i514" src="gv-14.png" alt="gv 5.14"></a></span></div>
 
 <p><a name="GvFLAGS"><b>GvFLAGS</b></a>:
 <blockquote><dl>
@@ -877,7 +899,7 @@ FORM has been eliminated because it was not 2 letters long :-).
 <p>The figure illustrates how the scalar variables <code>$::foo</code>
 and <code>$foo::bar::baz</code> are represented by Perl.
 
-<p><center><img src="stash.png"></center>
+<center><img src="stash.png" alt="stash"></center>
 
 <p>All resolution of qualified names starts with the stash pointed to
 by the <code>defstash</code> variable.  Nested name spaces are
@@ -903,13 +925,13 @@ same glob as the corresponding "<code>_&lt;</code>" entry in
 <code>defstash</code> does.
 
 
-<a name="cv"><h2>CV</h2></a>
+<h2><a name="cv">CV</a></h2>
 
 The <i>CV</i> ("code value") is like <a href="#svpvmg"><i>SvPVMG</i></a> above, but has
 some renamed and additional fields; CvSTASH, START, ROOT, GV, FILE,
 DEPTH, PADLIST, OUTSIDE, OUTSIDE_SEQ, CvFLAGS.
 
-<p><center><img src="cv.png"></center>
+<div align="center"><span class="i58" id="cv-8"><a name="cv-8" onclick="javascript:Toggle('cv-8')" title="Click to hide">Until 5.8:<img class="i58" src="cv-8.png" alt="cv 5.8"><br>Since 5.10:<img class="i510" src="cv-10.png" alt="cv 5.10"></a></span><br><span class="i514" id="cv-14"><a name="cv-14" href="#cv-8" onclick="javascript:Toggle('cv-8')" title="Click to show other">Since 5.14:<img class="i514" src="cv-14.png" alt="cv 5.14"></a></span></div>
 
 The <code>CvSTASH</code> is a pointer to the <a href="#stash">stash</a> in which the CV was <i>compiled</i>.<p>
 
@@ -922,12 +944,12 @@ the CV was defined. (really ?)
 
 <p>See <a href="#pad">PAD</a>s and <a href="#op">OP</a>s below.
 
-<a name="svpvfm"><h2>SvPVFM</h2></a>
+<h2><a name="svpvfm">SvPVFM</a></h2>
 
 The <i>SvPVFM</i> is like <a href="#vc"><i>CV</i></a> above, but adds a single field
 called LINES.
 
-<p><center><img src="svpvfm.png"></center>
+<div align="center"><span class="i58" id="svpvfm-8"><a name="svpvfm-8" onclick="javascript:Toggle('svpvfm-8')" title="Click to hide">Until 5.8:<img class="i58" src="svpvfm-8.png" alt="svpvfm 5.8"><br>Since 5.10:<img class="i510" src="svpvfm-10.png" alt="svpvfm 5.10"></a></span><br><span class="i514" id="svpvfm-14"><a name="svpvfm-14" href="#svpvfm-8" onclick="javascript:Toggle('svpvfm-8')" title="Click to show other">Since 5.14:<img class="i514" src="svpvfm-14.png" alt="svpvfm 5.14"></a></span></div>
 
 
 <a name="io"><h2>IO</h2></a>
@@ -935,7 +957,7 @@ called LINES.
 The <i>IO</i> is like <a href="#svpvmg"><i>SvPVMG</i></a> above, but has quite a few
 additional fields.
 
-<p><center><img src="io.png"></center>
+<div align="center"><span class="i58" id="io-8"><a name="io-8" onclick="javascript:Toggle('io-8')" title="Click to hide">Until 5.8:<img class="i58" src="io-8.png" alt="io 5.8"><br>Since 5.10:<img class="i510" src="io-10.png" alt="io 5.10"></a></span><br><span class="i514" id="io-14"><a name="io-14" href="#io-8" onclick="javascript:Toggle('io-8')" title="Click to show other">Since 5.14:<img class="i514" src="io-14.png" alt="io 5.14"></a></span></div>
 
 <b>IoFLAGS</b>
 <blockquote><dl>
@@ -957,7 +979,7 @@ lexical variables, op targets and constants. Every <code>TARG</code>
 argument for on OP (see below) is a index into the <code>PAD</code>,
 and each recursion level has its own <code>PAD</code>.<p>
 
-<p><center><img src="pad.png"></center>
+<center><img src="pad.png" alt="pad"></center>
 
 Each new sub creates a <code>PADLIST</code> of length 1, which points
 to current PAD, the <code>PL_curpad</code>, indexed by
@@ -972,7 +994,7 @@ CV. The 0'th slot of a frame AV is an AV which is
 targets, the scratchpads.
 
 During compilation is simplified scratchpad is used. The current
-<code>PL_comppad</code> is just a PAD which holds the TARG</code>
+<code>PL_comppad</code> is just a PAD which holds the <code>TARG</code>
 variables directly, without indirection which is needed for run-time
 recursion and threading.
 
@@ -990,7 +1012,7 @@ set. A <code>SVs_PADTMP</code> (targets/GVs/constants) has a
 only <code>SVs_PADMY</code> get valid slot names, as they are looked
 by name.
 
-<a name="op"><h2><a href="op.html">OP</a></h2></a>
+<h2><a name="op" href="op.html">OP</a></h2>
 
 A Perl program/subroutine is represented internally by a syntax tree built from OP nodes. This tree 
 really is just a linked list of ops in <i>exec</i> order.
@@ -1000,15 +1022,15 @@ are just macros, several opcodes share the same function.<br>
 In Perl there are 12 different OP classes, that are related like the following 
 class hierarchy diagram shows: 
 
-<p><center><img src="optypes.png"></center>
+<center><img src="optypes.png" alt="optypes"></center>
 
-<p><center><img src="op1.png"></center>
+<div align="center"><span class="i58" id="op1-8"><a name="op1-8" onclick="javascript:Toggle('op1-8')" title="Click to hide">Until 5.8:<img class="i58" src="op1-8.png" alt="op1 5.8"></a></span><br><span id="op1"><a name="op1" href="#op1-8" onclick="javascript:Toggle('op1-8')" title="Click to show other">Since 5.10:<img class="i514" src="op1.png" alt="op1"></a></span></div>
 
-<p><center><img src="op2.png"></center>
+<div align="center"><span class="i58" id="op2-8"><a name="op2-8" onclick="javascript:Toggle('op2-8')" title="Click to hide">Until 5.8:<img class="i58" src="op2-8.png" alt="op2 5.8"></a></span><br><span id="op2"><a name="op2" href="#op2-8" onclick="javascript:Toggle('op2-8')" title="Click to show other">Since 5.10:<img class="i514" src="op2.png" alt="op2"></a></span></div>
 
 <p>A typical small optree for <code>$a = $b + 42</code> would be:
 
-<center><img src="opsample.png"> <img src="opsamp2.png"></center>
+<div align="center"></div>
 
 <table><tr valign="top"><td><pre>
 	$ perl-nonthreaded -MO=Concise -e '$a = $b + 42'
@@ -1134,7 +1156,7 @@ many scopes has been left.  Note that the <code>tmps_floor</code> and
 <code>tmps_ix</code> values is the index of the last SV* pushed. They
 both start out as -1 when the stack is empty.
 
-<p><center><img src="scope.png"></center>
+<center><img src="scope.png" alt="scope"></center>
 
 <h3>The @_ stack</h3>
 
@@ -1166,7 +1188,7 @@ OP* is pushed on this stack.  When a subroutine returns, Perl pops the
 top OP* from <code>retstack</code> and continues execution from this
 place.</i>-->
 
-<p><center><img src="stack.png"></center>
+<center><img src="stack.png" alt="stack"></center>
 
 <h3><a name="context">Context</a></h3>
 
@@ -1180,7 +1202,7 @@ a block context or subst context. A block context has a common header of size 6
 and shares then structs for sub, format, eval, loop or given/when contexts also
 of size 6. The subst context is of size 12.
 
-<p><center><img src="context.png"></center>
+<center><img src="context.png" alt="context"></center>
 
 <h2><a name="sub">sub</a></h2>
 
@@ -1226,7 +1248,7 @@ the <code>blk_sub.argarray</code>.</p>
 
 <h2><a name="eval">eval</a></h2>
 
-<p><center><img src="eval.png"></center>
+<center><img src="eval.png" alt="eval"></center>
 
 <p>An eval call is similar to a sub call. The <b>evaltry</b> and <b>eval</b> op for
 <code>eval{}</code> and <code>eval ""</code> just pack the op sequence into a
@@ -1250,3 +1272,4 @@ $Date: 2010-02-11 11:06:15 rurban $
 </div>
 
 </body>
+</html>
