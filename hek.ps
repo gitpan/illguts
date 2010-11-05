@@ -1,0 +1,31 @@
+%require "common.ps"
+%require "rect.ps"
+%require "mws.ps"
+
+/hek {                   % <x> <y> [(f)(o)(o)(\\0)] hek -
+   10 dict begin
+      /chars exch def
+      /y exch def
+      /x exch def
+      /len chars length def
+      /cw 8 def % char width
+      /w cw len mul def
+      gsave
+         x y translate
+         0.8 LW
+         0 -10 w 0 rect S
+         0.4 LW
+         cw cw w cw sub {
+            dup 0 M -10 L S
+         } for
+         /Courier 8 SF
+         cw 2 div -7.5 M
+         chars {
+            gsave currentpoint cw 1 sub mwcs grestore
+            cw 0 RM
+         } forall
+         w 2 M (HEK*) rshow
+      grestore
+   end
+} def
+
