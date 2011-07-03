@@ -15,11 +15,12 @@
 
      1 LW
      x y 3 box
+     x y 3 3 newbox
 
      /Helvetica 11 SF
      x 5 add y 12 sub M
 
-     [(next)(hek)(val)] {
+     [(next)(hek)(typedval)] {
         gsave
         currentpoint 30 mws pop
         grestore
@@ -47,9 +48,9 @@
      gsave 0.8 setgray x3 cw sub y 27 sub x3 y 15 sub rect fill grestore
      x2 y 27 sub x3 y 15 sub rect S              % box
      gsave yellow x2 40 add y 27 sub x3 cw sub y 15 sub rect F grestore % key yellow
- 
+
      x2 20 add dup y 27 sub M y 15 sub L S       % sep between HASH/LEN
-     x2 40 add dup y 27 sub M y 15 sub L S       % sep between HASH/LEN
+     x2 40 add dup y 27 sub M y 15 sub L S       % sep LEN/key
 
      % sep between characters
      gsave 0.3 LW
@@ -62,7 +63,7 @@
      /Helvetica 8 SF
      (hash) x2 2 add y 25 sub 16 mws pop
      x2 30 add y 25 sub M (len) cshow
-     /Courier 7 SF
+     % /Courier 10 SF
      x2 40 add cw 2 div add y 24 sub M
      str {
        gsave 1 string dup 3 2 roll 0 exch put cshow grestore
@@ -76,10 +77,12 @@
      x3 y 13 sub M (hek) rshow
 
      % VAL arrow and corresponding SV
-     gsave 1 setgray x 55 add y 39 sub x2 y 36 sub rect F grestore
-     1 LW
-     x 42.5 add y 37.5 sub x2 ptr1
-     x2 y 33 sub sv2
+     % gsave 1 setgray x 55 add y 39 sub x2 y 36 sub rect F grestore
+     % 1 LW
+     % x 42.5 add y 37.5 sub x2 ptr1
+     % /Helvetica 9 SF
+     % x2 y 33 sub M (typed value) show
+     % x2 y 33 sub sv2
 
    end
 } def
