@@ -23,7 +23,7 @@ function Toggle(id) {
 <body bgcolor="#FFFFFF" text="#000000" link="#000055" vlink="#550000" alink="#000000" topmargin="0">
 
 <h1 align="center" name="top">PerlGuts Illustrated<br><br>
-<small>Version 0.47, for perl 5.8 and older</small></h1>
+<small>Version 0.47, since perl 5.18</small></h1>
 
 <p>This document is meant to supplement the <i><a href="http://perldoc.perl.org/perlguts.html">perlguts(1)</a></i> manual
 page that comes with Perl. It contains commented illustrations of all major internal Perl data structures.  
@@ -55,7 +55,8 @@ help emulate something like C++ inheritance of types.  The various
 data types that Perl implement are illustrated in this class hierarchy
 diagram.  The arrows indicate inheritance (IS-A relationships).
 
-<div align="center"><img class="i58" src="svtypes-8.png" alt="svtypes 5.8"></div>
+<div align="center"><img class="i518" src="svtypes-14.png" alt="svtypes 5.14"></div>
+<div align="center"><img class="i518" src="svtypes.png" alt="svtypes"></div>
 
 <p>As you can see, Perl uses multiple inheritance with <i>SvNULL</i>
 (also named just <i>SV</i>) acting as some kind of virtual base class.
@@ -134,7 +135,7 @@ values and the SV_U union with one pointer.</p>
 
 <b>_SV_HEAD and SV_U union</b>
 
-<div align="center"><img class="i58" src="svhead-8.png" alt="svhead 5.8"></div>
+<div align="center"><img class="i518" src="svhead.png" alt="svhead"></div>
 
 <!-- <div align="center"><span class="i58" id="svnull-8"><a name="svnull-8" onclick="javascript:Toggle('svnull-8')"><span title="Click to hide">Until 5.8:</span><img class="i58" src="svnull-8.png" alt="svnull 5.8"></a></span>
 <span class="i514" id="svhead"><a href="#svnull-8" onclick="javascript:Toggle('svnull-8')"><span title="Click to show other">Since 5.10:<img src="svhead.png" alt="_SV_HEAD 5.10"></span></a></span></div> -->
@@ -168,7 +169,7 @@ and other state information.  Some flags are just used as
 optimizations in order to avoid having to dereference several levels
 of pointers just to find that the information is not there.
 
-<div align="center"><img class="i58" src="flags-8.png" alt="flags 5.8"></div>
+<div align="center"><img class="i518" src="flags.png" alt="flags"></div>
 
 <p>The purpose of the <strong>SvFLAGS</strong> bits are:
 
@@ -455,7 +456,7 @@ make sure that the string is NUL-terminated if passed to C
 library routines.  This requires that LEN is always at least
 1 larger than CUR.
 
-<div align="center"><img class="i58" src="svpv-8.png" alt="svpv 5.8"></div>
+<div align="center"><img class="i518" src="svpv-14.png" alt="svpv 5.14"></div>
 
 <p>The <b>POK</b> flag indicates that the string pointed to by PVX
 contains an valid string value.  If the POK flag is off and
@@ -484,13 +485,13 @@ indicates if the IVX value is valid.  If both the IOK and POK flag is
 on, then the PVX will (usually) be a string representation of the same
 number found in IVX.
 
-<div align="center"><img class="i58" src="svpviv-8.png" alt="svpviv 5.8"></div>
+<div align="center"><img class="i518" src="svpviv-14.png" alt="svpviv 5.14"></div>
 
 <p>The <i>SvPVNV</i> type is like <i>SvPVIV</i> but uses the 
 single <i>double</i> value called NVX in xnv_u.
 The corresponding flag is called NOK.
 
-<div align="center"><img class="i58" src="svpvnv-8.png" alt="svpvnv 5.8"></div>
+<div align="center"><img class="i518" src="svpvnv-14.png" alt="svpvnv 5.14"></div>
 
 <h2><a name="SvOOK">SvOOK</a></h2>
 
@@ -500,7 +501,7 @@ from the beginning of a string, the <a href="#SVf_OOK"><i>OOK flag</i></a> is us
 stored within the first 8 bit (one char) of the buffer.
 The PVX, CUR, LEN is adjusted to point within the allocated string instead.
 
-<div align="center"><img class="i58" src="ook-8.png" alt="ook 5.8"></div>
+<div align="center"><img class="i518" src="ook-14.png" alt="ook 5.14"></div>
 
 <h2><a name="sviv">SvIV</a></h2>
 
@@ -511,14 +512,14 @@ The <i>SvIVX</i> macro abuses SvANY pointer arithmethic to point
 to a compile-time calculated negative offset from HEAD-1 to sv_u.svu_iv, 
 so that PVIV and IV can use the same SvIVX macro.
 
-<div align="center"><img class="i58" src="sviv-8.png" alt="sviv 5.8"></div>
+<div align="center"><img class="i518" src="sviv-14.png" alt="sviv 5.14"></div>
 
 <h2><a name="svnv">SvNV</a></h2>
 
 Since 5.10 for a raw NV (without PV) the xpvnv struct is not fully allocated,
 only the needed body size.
 
-<div align="center"><img class="i58" src="svnv-8.png" alt="svnv 5.8"></div>
+<div align="center"><img class="i518" src="svnv-14.png" alt="svnv 5.14"></div>
 
 <h2><a name="svrv">SvRV</a></h2>
 
@@ -526,7 +527,7 @@ only the needed body size.
 (which can be any of the SvNULL subtypes), AV or HV.
 A SvRV object with ROK flag off represents an undefined value.
 
-<div align="center"><img class="i58" src="svrv-8.png" alt="svrv 5.8"></div>
+<div align="center"><img class="i518" src="svrv.png" alt="svrv"></div>
 
 <h2><a name="svpvmg">SvPVMG</a></h2>
 
@@ -548,7 +549,7 @@ The STASH field is set when the value is blessed into a package
 The GV and CV subclasses introduce their own unrelated fields called
 STASH which might be confusing.)</i></small>
 
-<div align="center"><img class="i58" src="svpvmg-8.png" alt="svpvmg 5.8"></div>
+<div align="center"><img class="i518" src="svpvmg-14.png" alt="svpvmg 5.14"></div>
 
 <p>The field MAGIC points to an instance of <code>struct magic</code>
 (typedef'ed as <code>MAGIC</code>).  This struct has 8 fields:
@@ -624,7 +625,7 @@ first occurrence of the rare character. <i>BmUSEFUL</i> is incremented
 help in optimizing RE engine access away.  If it goes below 0, then
 the corresponding substring is forgotten and freed;
 
-<div align="center"><img class="i58" src="svpvbm-8.png" alt="svpvbm 5.8"></div>
+<div align="center"><img class="i518" src="svpvbm-14.png" alt="svpvbm 5.14"></div>
 
 <p>The extra SvPVBM information and the character distance table is
 only valid when the <b>VALID</b> flag is on.  A magic structure with
@@ -724,7 +725,7 @@ string to be affected) is assigned to the TARG field.  The substr
 offset value goes in the TARGOFF field and the substr length parameter
 goes in the TARGLEN field.
 
-<div align="center"><img class="i58" src="svpvlv-8.png" alt="svpvlv 5.8"></div>
+<div align="center"><img class="i518" src="svpvlv-14.png" alt="svpvlv 5.14"></div>
 
 <p>When assignment to an SvPVLV type occurs, then the value to be
 assigned is first copied into the SvPVLV itself (and affects the PVX,
@@ -748,7 +749,7 @@ less than CUR/LEN would be in a SVPV.
 The NVX field is unused.
 <p>The previous extra FLAGS field in the xpvav has been merged into the sv_flags field.
 
-<div align="center"><img class="i58" src="av-8.png" alt="av 5.8"></div>
+<div align="center"><img class="i518" src="av-14.png" alt="av 5.14"></div>
 
 <p>The array pointed to by ARRAY contains pointers to any of the
 SvNULL subtypes.  Usually ALLOC and ARRAY both point to the start of
@@ -822,7 +823,7 @@ The <b>FILL</b> is the number of elements in ARRAY which are not NULL.  The
 IVX field has been renamed <b>KEYS</b> and is the number of hash elements in
 the HASH.
 
-<div align="center"><img class="i58" src="hv-8.png" alt="hv 5.8"></div>
+<div align="center"><img class="i518" src="hv-18.png" alt="hv 5.18"></div>
 
 <p>The <a name="he"><b>HE</b></a>s are simple structs containing 3 pointers.  A pointer to the
 next HE, a pointer to the key and a pointer to the value of the given hash
@@ -855,7 +856,7 @@ SvNULL flags:
        have lots of hashes with the same keys.
        The SHAREKEYS flag is on by default for newly created HVs.
        <p>
-<div align="center"><img class="i58" src="strtab-8.png" alt="strtab 5.8"></div>
+<div align="center"><img class="i518" src="strtab.png" alt="strtab"></div>
 
        <p>
        What is special with the <code>strtab</code> hash is that the <i>val</i>
@@ -900,7 +901,7 @@ figure).  The magic GET method is used to stringify the globs (as the fully
 qualified name prefixed with '*').  The magic SET method is used to alias
 an GLOB based on the name of another glob.
 
-<div align="center"><img class="i58" src="gv-8.png" alt="gv 5.8"></div>
+<div align="center"><img class="i518" src="gv-14.png" alt="gv 5.14"></div>
 
 <p><a name="GvFLAGS"><b>GvFLAGS</b></a>:
 <blockquote><dl>
@@ -976,7 +977,7 @@ FORM has been eliminated because it was not 2 letters long :-).
 <p>The figure illustrates how the scalar variables <code>$::foo</code>
 and <code>$foo::bar::baz</code> are represented by Perl.
 
-<div align="center"><img class="i58" src="stash-8.png" alt="stash 5.8"></div>
+<div align="center"><img class="i518" src="stash.png" alt="stash"></div>
 
 <p>All resolution of qualified names starts with the stash pointed to
 by the <code>defstash</code> variable.  Nested name spaces are
@@ -1008,7 +1009,7 @@ The <i>CV</i> ("code value") is like <a href="#svpvmg"><i>SvPVMG</i></a> above, 
 some renamed and additional fields; CvSTASH, START, ROOT, GV, FILE,
 DEPTH, PADLIST, OUTSIDE, OUTSIDE_SEQ, CvFLAGS.
 
-<div align="center"><img class="i58" src="cv-8.png" alt="cv 5.8"></div>
+<div align="center"><img class="i518" src="cv-14.png" alt="cv 5.14"></div>
 
 The <code>CvSTASH</code> is a pointer to the <a href="#stash">stash</a> in which the CV was <i>compiled</i>.<p>
 
@@ -1025,7 +1026,7 @@ Lexicals are accessed by the OP->targ index into the PADLIST.
 The <i>SvPVFM</i> is like <a href="#vc"><i>CV</i></a> above, but adds a single field
 called LINES.
 
-<div align="center"><img class="i58" src="svpvfm-8.png" alt="svpvfm 5.8"></div>
+<div align="center"><img class="i518" src="svpvfm-14.png" alt="svpvfm 5.14"></div>
 
 
 <a name="io"><h2>IO</h2></a>
@@ -1033,7 +1034,7 @@ called LINES.
 The <i>IO</i> is like <a href="#svpvmg"><i>SvPVMG</i></a> above, but has quite a few
 additional fields.
 
-<div align="center"><img class="i58" src="io-8.png" alt="io 5.8"></div>
+<div align="center"><img class="i518" src="io-14.png" alt="io 5.14"></div>
 
 <b>IoFLAGS</b>
 <blockquote><dl>
@@ -1103,9 +1104,9 @@ class hierarchy diagram shows:
 
 <center><img src="optypes.png" alt="optypes"></center>
 
-<div align="center"><img class="i58" src="op1-8.png" alt="op1 5.8"></div>
+<div align="center"><img class="i518" src="op1.png" alt="op1"></div>
 
-<div align="center"><img class="i58" src="op2-8.png" alt="op2 5.8"></div>
+<div align="center"><img class="i518" src="op2.png" alt="op2"></div>
 
 <p>A typical small optree for <code>$a = $b + 42</code> would be:
 
@@ -1238,7 +1239,7 @@ many scopes has been left.  Note that the <code>tmps_floor</code> and
 <code>tmps_ix</code> values is the index of the last SV* pushed. They
 both start out as -1 when the stack is empty.
 
-<div align="center"><img class="i58" src="scope-8.png" alt="scope 5.8"></div>
+<div align="center"><img class="i518" src="scope.png" alt="scope"></div>
 
 <h3>The @_ stack</h3>
 
@@ -1270,7 +1271,7 @@ OP* is pushed on this stack.  When a subroutine returns, Perl pops the
 top OP* from <code>retstack</code> and continues execution from this
 place.</i>-->
 
-<div align="center"><img class="i58" src="stack-8.png" alt="stack 5.8"></div>
+<div align="center"><img class="i518" src="stack.png" alt="stack"></div>
 
 <h3><a name="context">Context</a></h3>
 

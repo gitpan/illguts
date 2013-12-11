@@ -5,7 +5,7 @@
 <style> 
 span.i58, span.i510 {display: none;} 
 img.i514, div.i514 {text-align: center;} 
-img.i58, img.i510, img.i514 {border: none;}
+img.i58, img.i510, img.i514, img.i518 {border: none;}
 </style>
 <script type="text/javascript"> 
 function Toggle(id) {
@@ -23,20 +23,21 @@ function Toggle(id) {
 <body bgcolor="#FFFFFF" text="#000000" link="#000055" vlink="#550000" alink="#000000" topmargin="0">
 
 <h1 align="center" name="top">PerlGuts Illustrated<br><br>
-<small>Version 0.46, for perl 5.20 and older</small></h1>
+<small>Version 0.47, for perl 5.20 and older</small></h1>
 
 <p>This document is meant to supplement the <i><a href="http://perldoc.perl.org/perlguts.html">perlguts(1)</a></i> manual
 page that comes with Perl. It contains commented illustrations of all major internal Perl data structures.  
 Having this document handy hopefully makes reading the Perl source code easier.
 It might also help you interpret the <i><a href="http://perldoc.perl.org/Devel/Peek.html">Devel::Peek</a></i> dumps.
 
-<p>Most of the internal perl structures had been refactored twice, with 5.10, and 5.14. The comparison links and illustrations for 5.8 - 5.20 are now included in this single document, but also available as extra files. 5.10 to 5.12 changes: only <a href="#SvOOK"><i>OOK</i></a>.
+<p>Most of the internal perl structures had been refactored twice, with 5.10 and 5.14. The comparison links and illustrations for 5.8 - 5.20 are now included in this single document, but also available as extra files. 5.10 to 5.12 changes: only <a href="#SvOOK"><i>OOK</i></a>.
 
 <ul>
 <li><a href="index-8.html">illguts for 5.8 and older</a>
 <li><a href="index-10.html">illguts for 5.10</a>
 <li><a href="index-12.html">illguts for 5.12</a>
-<li><a href="index-14.html">illguts for 5.14 - 5.20</a>
+<li><a href="index-14.html">illguts for 5.14 - 5.18</a>
+<li><a href="index-18.html">illguts since 5.18</a>
 </ul>
 
 <p>The first things to look at are the data structures that represent
@@ -465,11 +466,15 @@ turned off represents <i>undef</i>.  The PVX pointer can
 also be NULL when POK is off and no string storage has been
 allocated.
 
+<p>If the string is shared, created by <b>sharepvn</b>, the PVX
+is part of a <a href="#hek"><b>HEK</b></a>, i.e. the PVX points to the hek_key of the <tt>struct hek</tt>.
+
 <p>Since 5.18 there is now a seperate <b>IsCOW</b> flag indicating that
 the PVX is shared as long as nobody is changing the value. The current
 implementation adds a <b>COW_REFCNT</b> byte at the aligned end of the
 PVX, which makes it unusable for COW in the static compiler and threads.
-It also requires that LEN is always at least 2 larger than CUR to keep the \0 byte.
+It also requires that LEN is always at least 2 larger than CUR to keep
+the \0 byte. But beware: shared COWs use SvLEN=0 and set hek_len.
 
 <h2><a name="svpviv">SvPVIV</a> and <a name="svpvnv">SvPVNV</a></h2>
 
@@ -817,7 +822,7 @@ The <b>FILL</b> is the number of elements in ARRAY which are not NULL.  The
 IVX field has been renamed <b>KEYS</b> and is the number of hash elements in
 the HASH.
 
-<div align="center"><span class="i58" id="hv-8"><a name="hv-8" onclick="javascript:Toggle('hv-8')" title="Click to hide">Until 5.8:<img class="i58" src="hv-8.png" alt="hv 5.8"><br>Since 5.10:<img class="i510" src="hv-10.png" alt="hv 5.10"></a></span><br><span class="i514" id="hv-14"><a name="hv-14" href="#hv-8" onclick="javascript:Toggle('hv-8')" title="Click to show other">Since 5.14:<img class="i514" src="hv-14.png" alt="hv 5.14"></a></span></div>
+<div align="center"><span class="i58" id="hv-8"><a name="hv-8" onclick="javascript:Toggle('hv-8')" title="Click to hide">Until 5.8:<img class="i58" src="hv-8.png" alt="hv 5.8"><br>Since 5.10:<img class="i510" src="hv-10.png" alt="hv 5.10"></a></span><br><span class="i514" id="hv-14"><a name="hv-14" href="#hv-8" onclick="javascript:Toggle('hv-8')" title="Click to show other">Since 5.14:<img class="i514" src="hv-14.png" alt="hv 5.14"></a></span><span class="i518" id="hv-18"><a name="hv-18" href="#hv-8" onclick="javascript:Toggle('hv-8')" title="Click to show other">Since 5.18:<img class="i518" src="hv-18.png" alt="hv 5.18"></a></span></div>
 
 <p>The <a name="he"><b>HE</b></a>s are simple structs containing 3 pointers.  A pointer to the
 next HE, a pointer to the key and a pointer to the value of the given hash
@@ -1187,6 +1192,10 @@ d danger, unknown side effects
 u defaults to $_
 </pre></td></tr></table>
 
+A word on <b>cop.cop_warnings</b>:
+The numeric value of lexical warnings can be special: 0, 1 or 2 and is then stored in 
+pointer pointed to by cop_warnings. cop_warnings may also hold a string buffer of a bitmask of warning categories. Since 5.10 this string buffer is in the second word of cop_warnings, the length is then stored in the first word. (i.e a pascal string) <!-- no picture yet -->
+
 <p><i>For syntax trees and OP codes also see 
 <a href="http://www.perlfoundation.org/perl5/index.cgi?optree_guts">http://www.perlfoundation.org/perl5/index.cgi?optree_guts</a> 
 and 
@@ -1341,7 +1350,7 @@ JMPENV level with a proper <em>setjmp</em> record.
 <i>&copy; 1998-1999 Gisle Aas. 2009,2010,2012,2013 Reini Urban</i><br>
 <a href="mailto:gisle@aas.no">&lt;gisle@aas.no&gt;</a><br>
 <a href="mailto:rurban@x-ray.at">&lt;rurban@x-ray.at&gt;</a><br>
-$Date: 2013-08-27 12:24:38 rurban $
+$Date: 2013-12-11 14:13:19 rurban $
 </small>
 </div>
 
